@@ -1,6 +1,9 @@
+import re
 import sys
 
 from PyQt5.QtWidgets import *
+
+from pysender.outlook import OutlookClient
 
 
 class FormLabel(QLabel):
@@ -40,6 +43,7 @@ class MessageForm(QWidget):
         super(MessageForm, self).__init__()
 
         self.from_field = QLineEdit()
+        self.from_field.setDisabled(True)
         self.to_field = QTextEdit()
         self.subject_field = QLineEdit()
         self.message_field = QTextEdit()
@@ -121,15 +125,36 @@ class MainWindow(QMainWindow):
         about_menu = menu_bar.addMenu("&Help")
         about_menu.addAction(about_action)
 
-    @staticmethod
-    def send_message():
-        dialog = ErrorDialog("Missing implementation", "The action is not implemented yet")
-        dialog.exec_()
+    def send_message(self):
+        address_to = self.message_form.to_field.toPlainText()
+        subject = self.message_form.subject_field.text()
+        body_plain = self.message_form.message_field.toPlainText()
+        body_html = self.message_form.message_field.toHtml()
 
-    @staticmethod
-    def reset_input():
-        dialog = ErrorDialog("Missing implementation", "The action is not implemented yet")
-        dialog.exec_()
+        if not address_to:
+            dialog = ErrorDialog("Missing data", "Please fill \"To\" field with recipients email addresses.")
+            dialog.exec_()
+            return
+        else:
+            address_to = re.sub(r"\s+", ";", address_to)
+
+        if not subject:
+            dialog = ErrorDialog("Missing data", "Please fill \"Subject\" field with email subject.")
+            dialog.exec_()
+            return
+
+        if not body_plain or not body_html:
+            dialog = ErrorDialog("Missing data", "Please fill \"Body\" field with some content.")
+            dialog.exec_()
+            return
+
+        outlook_client = OutlookClient()
+        outlook_client.send_email(address_to, subject, body_plain, body_html)
+
+    def reset_input(self):
+        self.message_form.to_field.setText("")
+        self.message_form.subject_field.setText("")
+        self.message_form.message_field.setText("")
 
     @staticmethod
     def show_info(self):
