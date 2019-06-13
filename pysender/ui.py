@@ -49,7 +49,7 @@ class MessageForm(QWidget):
     def init_widgets(self):
         address_form = QGridLayout()
         address_form.setSpacing(10)
-        address_form.addWidget(FormLabel("To:"), 1, 0)
+        address_form.addWidget(FormLabel("From:"), 1, 0)
         address_form.addWidget(self.from_field, 1, 1)
         address_form.addWidget(FormLabel("To:"), 2, 0)
         address_form.addWidget(self.to_field, 2, 1, 2, 1)
