@@ -1,6 +1,7 @@
 import re
 import sys
 
+from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import *
 
 from pysender.outlook import OutlookClient
@@ -96,16 +97,19 @@ class MainWindow(QMainWindow):
 
     def init_menubar(self):
         quit_action = QAction("&Quit", self)
+        quit_action.setIcon(self.style().standardIcon(QStyle.SP_TitleBarCloseButton))
         quit_action.setShortcut("Ctrl+Q")
         quit_action.setStatusTip("Close the application")
         quit_action.triggered.connect(self.quit_application)
 
         send_action = QAction("&Send", self)
+        send_action.setIcon(self.style().standardIcon(QStyle.SP_DialogApplyButton))
         send_action.setShortcut("Ctrl+Enter")
         send_action.setStatusTip("Send message to all recipients")
         send_action.triggered.connect(self.send_message)
 
         reset_action = QAction("&Reset", self)
+        reset_action.setIcon(self.style().standardIcon(QStyle.SP_DialogResetButton))
         reset_action.setShortcut("Ctrl+Del")
         reset_action.setStatusTip("Reset all entered data")
         reset_action.triggered.connect(self.reset_input)
@@ -119,11 +123,15 @@ class MainWindow(QMainWindow):
         file_menu.addAction(quit_action)
 
         action_menu = menu_bar.addMenu("&Action")
-        action_menu.addAction(send_action)
-        action_menu.addAction(reset_action)
+        action_menu.addActions([send_action, reset_action])
 
         about_menu = menu_bar.addMenu("&Help")
         about_menu.addAction(about_action)
+
+        tool_bar = self.addToolBar("Main")
+        tool_bar.setIconSize(QSize(18, 18))
+        tool_bar.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        tool_bar.addActions([send_action, reset_action])
 
     def send_message(self):
         address_to = self.message_form.to_field.toPlainText()
