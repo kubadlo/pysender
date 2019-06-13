@@ -1,2 +1,3 @@
-# pysender
-Bulk email sender for computers from the stone age
+# PySender
+
+Bulk email sender for computers from the stone age.

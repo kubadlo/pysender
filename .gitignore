@@ -1,0 +1,17 @@
+# Python
+.venv
+/venv/
+__pycache__/
+
+# PyInstaller
+build/
+dist/
+
+# PyCharm
+.idea/
+
+#Sublime Text
+*.sublime-workspace
+
+# VSCode
+.vscode/
