@@ -1,4 +1,4 @@
-PyInstaller==3.4
+PyInstaller==3.6
 PyQt5==5.12.1
 PyQt5-stubs==5.12.1.0
 pywin32==224
